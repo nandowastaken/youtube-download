@@ -1,23 +1,30 @@
 from pytube import YouTube
+from colorama import init, Fore
 
 def on_complete(stream, filepath):
     print('download completed')
     print(filepath)
 
 def on_progress(stream, chunk, bytes_remaining):
-    pass
+    progress_string = f'{100 - round(bytes_remaining / stream.filesize * 100, 2)}%'
+    print(progress_string)
 
+init()
 link = input("Youtube video link: ")
 video_object = YouTube(link, on_complete_callback = on_complete, on_progress_callback = on_progress)
 
 # video information
-print(f'title: {video_object.title}')
-print(f'length: {round(video_object.length/60, 2)} minutes')
-print(f'views: {round(video_object.views/1000000, 2)} million')
-print(f'author:  {video_object.views}')
+print(Fore.RED + f'title: \033[39m{video_object.title}')
+print(Fore.RED + f'length: \033[39m{round(video_object.length/60, 2)} minutes')
+print(Fore.RED + f'views: \033[39m{round(video_object.views/1000000, 2)} million')
+print(Fore.RED + 'author: \033[39m{video_object.author}')
 
 # download
-print(f'download: (b)est | (w)orst | (a)udio only | exit')
+print(Fore.RED + 'download: ' + 
+    Fore.GREEN + '(b)est \033[39m| ' +  
+    Fore.YELLOW + '(w)orst \033[39m| ' + 
+    Fore.BLUE + '(a)udio only \033[39m| ' + '(e)xit')
+
 download_choice = input('choice: ')
 
 match download_choice:
